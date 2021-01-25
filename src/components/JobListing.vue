@@ -156,7 +156,10 @@
     },
     computed: {
       filteredJobs() {
-        return this.jobs.filter(job => this.checkedTag.every(tag => tag == job.level || tag == job.role || tag == job.languages.filter(lang => tag == lang) || tag == job.tools.filter(tool => tag == tool)));        
+        return this.jobs.filter(job => this.checkedTag.every(tag => tag == job.level
+        || tag == job.role 
+        || tag == job.languages.filter(lang => tag == lang) 
+        || tag == job.tools.filter(tool => tag == tool)));        
       }
     },
     created() {
