@@ -135,7 +135,6 @@
     }),
     methods: {
       addTag(e){
-        console.log(this.filteredJobs)
         if(this.checkedTag.includes(e.target.value)){
           return 
         }
@@ -162,7 +161,6 @@
     },
     created() {
       this.axios.get('data.json').then(res => {
-        console.log(res.data)
         this.jobs = res.data
         return this.jobs
       }).catch(err => {
