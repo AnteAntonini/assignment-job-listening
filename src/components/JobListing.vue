@@ -7,6 +7,7 @@
         <v-hover v-slot="{ hover }">
           <v-card
             color="white"
+            elevation="0"
             class="card-content my-0 ml-0"
             :class="{ 'on-hover': hover }"
           >
@@ -134,6 +135,9 @@ export default {
 .main {
   min-height: calc(100vh - 120px);
   background: $lightGreyBackground;
+}
+.card-content {
+  box-shadow: 0 15px 12px $lightGreyTag !important;
 }
 .filter_active {
   background: white;
