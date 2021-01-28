@@ -7,46 +7,46 @@
         <v-hover v-slot="{ hover }">
           <v-card
             color="white"
-            class="my-0 card ml-0"
+            class="card-content my-0 ml-0"
             :class="{ 'on-hover': hover }"
           >
             <div class="d-flex flex-no-wrap justify-start">
-              <v-col sm="2" md="2" class="job-avatar px-0">
-                <v-avatar class="ma-3" size="90" tile>
+              <v-col sm="2" md="2" class="job-avatar px-0"> 
+                <v-avatar class="ma-3" size="90" tile>  
                   <v-img :src="job.logo" contain></v-img>
                 </v-avatar>
               </v-col>
-              <v-col sm="6" md="5" class="job-description px-0">
-                <v-card-title class="company-name py-3 pl-1 pr-0"
+              <v-col sm="6" md="5" class="job-desc px-0">
+                <v-card-title class="job-desc__company-name py-3 pl-1 pr-0"
                   ><span class="pr-3">{{ job.company }}</span>
-                  <v-chip small v-if="job.new" class="chip-new mb-1 mx-1"
+                  <v-chip small v-if="job.new" class="chip__new mb-1 mx-1"
                     >NEW!</v-chip
                   >
                   <v-chip
                     small
                     v-if="job.featured"
-                    class="chip-featured mb-1 ml-1"
+                    class="chip__featured mb-1 ml-1"
                     >FEATURED</v-chip
                   >
                 </v-card-title>
-                <v-card-subtitle class="job-position">{{
+                <v-card-subtitle class="job-desc__company-position">{{
                   job.position
                 }}</v-card-subtitle>
-                <v-card-text class="job-details px-1">
+                <v-card-text class="job-desc__company-details px-1">
                   <span>{{ job.postedAt }}</span> &bull;
                   <span>{{ job.contract }}</span> &bull;
                   <span>{{ job.location }} </span>
                 </v-card-text>
               </v-col>
 
-              <v-col sm="4" md="5" class="button-group-tags px-0">
+              <v-col sm="4" md="5" class="button-group px-0">
                 <v-divider
                   inset
                   class="job-divider mb-1 mt-4 d-sm-none"
                 ></v-divider>
                 <div class="pl-1">
                   <button
-                    class="button-tag"
+                    class="button-group__button-tag"
                     @click="addTag($event)"
                     :value="job.role"
                   >
@@ -55,12 +55,12 @@
                   <button
                     :value="job.level"
                     @click="addTag($event)"
-                    class="button-tag"
+                    class="button-group__button-tag"
                   >
                     {{ job.level }}
                   </button>
                   <button
-                    class="button-tag"
+                    class="button-group__button-tag"
                     v-for="language in job.languages"
                     :key="language.id"
                     @click="addTag($event)"
@@ -69,7 +69,7 @@
                     {{ language }}
                   </button>
                   <button
-                    class="button-tag"
+                    class="button-group__button-tag"
                     v-for="tool in job.tools"
                     @click="addTag($event)"
                     :key="tool.id"
@@ -135,7 +135,7 @@ export default {
   min-height: calc(100vh - 120px);
   background: $lightGreyBackground;
 }
-.active-filter {
+.filter_active {
   background: white;
   z-index: 1;
   height: 60px;
@@ -149,40 +149,42 @@ export default {
   border-radius: 3px;
   font-weight: 700;
 }
-.button-group-tags {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  font-weight: 700 !important;
-}
-.company-name {
-  color: $primaryColor;
-  font-weight: 700 !important;
-  font-size: 14px;
-}
-.job {
-  &-avatar {
+
+ .job-avatar {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  &-position {
-    color: $distinctlyDarkGrey;
-    font-weight: 700 !important;
-    font-size: 18px;
-    padding: 12px 0 8px 4px !important;
+
+  .job-desc {
+    &__company-name {
+      color: $primaryColor;
+      font-weight: 700 !important;
+      font-size: 14px;
+    }
+    &__company-position {
+      color: $distinctlyDarkGrey;
+      font-weight: 700 !important;
+      font-size: 18px;
+      padding: 12px 0 8px 4px !important;
+    }
+    &__company-details {
+      color: $darkGrey;
+      font-weight: 500 !important;
+    }
   }
-  &-details {
-    color: $darkGrey;
-    font-weight: 500 !important;
-  }
-}
 
 .v-application--is-ltr .v-divider--inset:not(.v-divider--vertical) {
   margin: 0;
 }
 
-.button-tag {
+.button-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-weight: 700 !important;
+
+  &__button-tag {
   max-width: 100%;
   padding: 0 12px;
   position: relative;
@@ -198,99 +200,98 @@ export default {
   color: $primaryColor;
   margin: 4px 8px 0 0;
   outline: none;
-}
-.button-tag:hover {
-  background: $primaryColor;
-  color: white;
+
+    &:hover {
+      background: $primaryColor;
+      color: white;
+    }
+  }
 }
 
 .v-card.on-hover {
   position: relative;
   border-left: 5px solid $primaryColor !important;
 
-  .job-position {
+  .job-desc__company-position {
     color: $primaryColor !important;
     cursor: pointer;
   }
 }
 
 .chip {
-  &-new {
+  &__new {
     color: white !important;
     background: $primaryColor !important;
     font-size: 10px !important;
     margin: 0 8px 0 16px;
     padding-top: 3px;
   }
-  &-featured {
+  &__featured {
     color: white !important;
     background: $distinctlyDarkGrey !important;
     font-size: 10px !important;
     padding-top: 3px;
   }
-  &-active {
-    background: $primaryColor !important;
-    color: white !important;
-    font-size: 12px !important;
-  }
 }
 
 @media all and (max-width: 375px) {
-  .container {
-    margin-bottom: 20px;
-  }
-  .active-filter {
-    height: 130px;
-    padding: 0;
-    max-height: 100%;
-    top: -90px;
-  }
-  .card {
-    display: flex;
-    flex-direction: column;
-    height: 230px !important;
-    margin-left: 20px;
-  }
-  .company-name {
+.container {
+  margin-bottom: 20px;
+}
+.filter_active {
+  height: 130px;
+  padding: 0;
+  max-height: 100%;
+  top: -90px;
+}
+.card-content {
+  display: flex;
+  flex-direction: column;
+  height: 230px !important;
+  margin-left: 20px;
+}
+.job-desc {
+  display: block;
+
+  &__company-name {
     margin: 5px 0 0 5px;
   }
-  .job {
-    &-avatar {
-      position: absolute;
-      top: -55px;
-      right: 115px;
+  &__company-position {
+    margin-left: 8px;
+    font-size: 15px;
+  }
+  &__company-details {
+    margin-left: 8px !important;
+  }
+}
+  
+.job {
+  &-avatar {
+    position: absolute;
+    top: -55px;
+    right: 115px;
 
-      .v-avatar {
-        width: 60px !important;
-        height: 60px !important;
-      }
+    .v-avatar {
+      width: 60px !important;
+      height: 60px !important;
     }
-    &-description {
-      display: block;
-    }
-    &-position {
-      margin-left: 8px;
-      font-size: 15px;
-    }
-    &-details {
-      margin-left: 8px !important;
-    }
-    &-divider {
-      max-width: calc(100% - 8px) !important;
-      margin: 0 auto !important;
+  }
+  &-divider {
+    max-width: calc(100% - 8px) !important;
+    margin: 0 auto !important;
     }
   }
   .v-chip-group .v-slide-group__content {
-    margin-left: 8px !important;
+  margin-left: 8px !important;
   }
   .chip-group-tags {
-    position: absolute;
-    top: 100px;
-    display: inline-block;
-    justify-content: flex-end;
-    padding-left: 8px !important;
-    width: 90%;
-    margin-left: 8px !important;
+  position: absolute;
+  top: 100px;
+  display: inline-block;
+  justify-content: flex-end;
+  padding-left: 8px !important;
+  width: 90%;
+  margin-left: 8px !important;
   }
 }
 </style>
