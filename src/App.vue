@@ -30,6 +30,9 @@ export default {
 </script>
 
 <style lang="scss">
+.v-application {
+  font-family: 'Spartan', sans-serif !important;
+}
 .bar{
   z-index: 0 !important;
 }
