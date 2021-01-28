@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar
-      color="primary"
+      color="#5ba4a4"
       dark
       prominent
       app

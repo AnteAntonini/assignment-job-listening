@@ -1,48 +1,13 @@
 <template>
   <div class="main">
-    <v-container class="px-0">
-      <div
-        class="active-filter"
-        :class="{ visibleFilter: isActive }"
-        v-show="isActive"
-      >
-        <v-col cols="10" sm="11" class="px-0">
-          <v-chip-group
-            class="chip-tag mb-1"
-            column
-            active-class="chip-tag-disabled"
-          >
-            <v-chip
-              class="tag-active"
-              label
-              v-for="(tag, index) in checkedTag"
-              :key="index"
-              style="display: inline"
-              >{{ tag }}
-              <img
-                src="\images\icon-remove.svg"
-                alt=""
-                class="tag-remove"
-                @click="removeTag(index)"
-              />
-            </v-chip>
-          </v-chip-group>
-        </v-col>
-        <v-col cols="2" sm="1" class="clear-btn">
-          <button class="clear-filter" @click="removeAllTags">Clear</button>
-        </v-col>
-      </div>
+    <v-container class="px-0 py-15">
+      <job-filter :checkedTag="checkedTag" :isActive="isActive" />
 
-      <div
-        v-for="job in filteredJobs"
-        :key="job.id"
-        style="width: 100%"
-        class="container"
-      >
+      <div v-for="job in filteredJobs" :key="job.id" class="container">
         <v-hover v-slot="{ hover }">
           <v-card
             color="white"
-            class="my-5 card"
+            class="my-0 card ml-0"
             :class="{ 'on-hover': hover }"
           >
             <div class="d-flex flex-no-wrap justify-start">
@@ -123,103 +88,53 @@
 </template>
 
 <script>
-  export default {
-    name: 'JobListing',
+import jobFilter from './JobFilter'
 
-    data: () => ({
-      jobs: [],
-      checkedTag: [],
-      hover: false,
-      isActive: false
+export default {
+  name: 'JobListing',
+  components: {
+    jobFilter
+  },
+  data: () => ({
+    jobs: [],
+    checkedTag: [],
+    hover: false,
 
-    }),
-    methods: {
-      addTag(e){
-        if(this.checkedTag.includes(e.target.value)){
-          return 
-        }
-        else {
-          this.checkedTag.push(e.target.value)
-        }
-        this.isActive = true     
-      },
-      removeTag(index) {
-        this.checkedTag.splice(index,1)
-        if(this.checkedTag.length == 0) {
-          this.isActive = false
-        }
-      },
-      removeAllTags() {
-        this.checkedTag.splice(0,this.checkedTag.length)
-        this.isActive = false
-      }
-    },
-    computed: {
-      filteredJobs() {
-        return this.jobs.filter(job => this.checkedTag.every(tag => tag == job.level
-        || tag == job.role 
-        || tag == job.languages.filter(lang => tag == lang) 
-        || tag == job.tools.filter(tool => tag == tool)));        
-      }
-    },
-    created() {
-      this.axios.get('data.json').then(res => {
-        this.jobs = res.data
-        return this.jobs
-      }).catch(err => {
-        console.log(err)
-      })
+  }),
+  methods: {
+    addTag(e){
+      if(this.checkedTag.includes(e.target.value)) return 
+      else this.checkedTag.push(e.target.value)   
     }
+  },
+  computed: {
+    isActive() {
+      return !!this.checkedTag.length
+    },
+    filteredJobs() {
+      return this.jobs.filter(job => this.checkedTag.every(tag => tag == job.level
+      || tag == job.role 
+      || tag == job.languages.filter(lang => tag == lang) 
+      || tag == job.tools.filter(tool => tag == tool)));        
+    }
+  },
+  created() {
+    this.axios.get('data.json').then(res => {
+      this.jobs = res.data
+    }).catch(err => {
+      console.log(err)
+    })
   }
+}
 </script>
 
 <style lang="scss" scoped>
 @import "@/scss/_variables.scss";
 
 .main {
+  min-height: calc(100vh - 120px);
   background: $lightGreyBackground;
 }
-
-.tag {
-  &-active {
-    margin: 0 12px !important;
-    padding-right: 0 !important;
-  }
-  &-remove {
-    height: 32px;
-    width: 32px;
-    background: $primaryColor;
-    padding: 9px;
-    margin-left: 5px;
-
-    &:hover {
-      background: $distinctlyDarkGrey;
-    }
-  }
-}
-
-.visibleFilter {
-  display: none;
-}
-
-.clear {
-  &-btn {
-    text-align: end;
-    padding: 12px 0;
-  }
-  &-filter {
-    font-size: 12px;
-    color: $darkGrey;
-    cursor: pointer;
-    outline: none;
-
-    &:hover {
-      color: $primaryColor;
-      text-decoration: underline;
-    }
-  }
-}
-
 .active-filter {
   background: white;
   z-index: 1;
@@ -229,7 +144,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  top: -40px;
+  top: -80px;
   justify-content: space-between;
   border-radius: 3px;
   font-weight: 700;
@@ -267,10 +182,6 @@
   margin: 0;
 }
 
-.hoverBtn {
-  background: $distinctlyDarkGrey;
-}
-
 .button-tag {
   max-width: 100%;
   padding: 0 12px;
@@ -285,8 +196,7 @@
   border-radius: 4px;
   font-weight: 700;
   color: $primaryColor;
-  margin-top: 4px;
-  margin-right: 8px;
+  margin: 4px 8px 0 0;
   outline: none;
 }
 .button-tag:hover {
@@ -323,18 +233,6 @@
     color: white !important;
     font-size: 12px !important;
   }
-  &-tag-disabled {
-    background: $lightGreyTag !important;
-    color: $primaryColor !important;
-    font-size: 12px !important;
-  }
-  &-tag {
-    .v-chip:not(.v-chip--active) {
-      background: $lightGreyTag !important;
-      color: $primaryColor;
-      font-size: 12px;
-    }
-  }
 }
 
 @media all and (max-width: 375px) {
@@ -345,15 +243,7 @@
     height: 130px;
     padding: 0;
     max-height: 100%;
-  }
-  .clear-btn {
-    text-align: start;
-    padding: 0;
-  }
-  .tag-active {
-    margin-bottom: 10px !important;
-    font-size: 11px !important;
-    height: 28px !important;
+    top: -90px;
   }
   .card {
     display: flex;
